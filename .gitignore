@@ -1,0 +1,126 @@
+# .NET
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio cache/options directory
+.vs/
+.vscode/
+
+## Rider
+.idea/
+*.sln.iml
+
+## Build results
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Node / Angular
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+## OS
+.DS_Store
+Thumbs.db
+
+## IDE
+*.swp
+*.swo
+*~
+
+# Angular
+dist/
+tmp/
+.angular/
+*.tsbuildinfo
+.angular/cache
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Database
+*.mdf
+*.ldf
+*.ndf
+
+# Backend specific
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/**/*.suo
+
+# Frontend specific
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.angular/
+frontend/**/.vscode/
+
+# Keep database scripts
+!database/scripts/*.sql

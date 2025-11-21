@@ -1,0 +1,8 @@
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'Be3DB')
+BEGIN
+    CREATE DATABASE Be3DB;
+END
+GO
+
+USE Be3DB;
+GO

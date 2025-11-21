@@ -1,0 +1,137 @@
+<div class="container">
+  <div class="header">
+    <h2>{{ isEditMode ? 'Editar Paciente' : 'Novo Paciente' }}</h2>
+    <button (click)="cancelar()" class="btn-secondary">Cancelar</button>
+  </div>
+
+  @if (error) {
+    <div class="error-message">{{ error }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nome">Nome *</label>
+        <input type="text" id="nome" formControlName="nome" class="form-control" />
+        @if (getFieldError('nome')) {
+          <span class="error-text">{{ getFieldError('nome') }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="sobrenome">Sobrenome *</label>
+        <input type="text" id="sobrenome" formControlName="sobrenome" class="form-control" />
+        @if (getFieldError('sobrenome')) {
+          <span class="error-text">{{ getFieldError('sobrenome') }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento *</label>
+        <input type="date" id="dataNascimento" formControlName="dataNascimento" class="form-control" />
+        @if (getFieldError('dataNascimento')) {
+          <span class="error-text">{{ getFieldError('dataNascimento') }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="genero">Gênero *</label>
+        <select id="genero" formControlName="genero" class="form-control">
+          <option value="">Selecione</option>
+          @for (genero of generos; track genero.value) {
+            <option [value]="genero.value">{{ genero.label }}</option>
+          }
+        </select>
+        @if (getFieldError('genero')) {
+          <span class="error-text">{{ getFieldError('genero') }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input type="text" id="cpf" formControlName="cpf" class="form-control" 
+               mask="000.000.000-00" placeholder="000.000.000-00" />
+      </div>
+
+      <div class="form-group">
+        <label for="rg">RG *</label>
+        <input type="text" id="rg" formControlName="rg" class="form-control" />
+        @if (getFieldError('rg')) {
+          <span class="error-text">{{ getFieldError('rg') }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="ufRG">UF do RG *</label>
+        <select id="ufRG" formControlName="ufRG" class="form-control">
+          <option value="">Selecione</option>
+          @for (uf of ufs; track uf.value) {
+            <option [value]="uf.value">{{ uf.label }}</option>
+          }
+        </select>
+        @if (getFieldError('ufRG')) {
+          <span class="error-text">{{ getFieldError('ufRG') }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input type="email" id="email" formControlName="email" class="form-control" />
+      @if (getFieldError('email')) {
+        <span class="error-text">{{ getFieldError('email') }}</span>
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="celular">Celular</label>
+        <input type="text" id="celular" formControlName="celular" class="form-control"
+               mask="(00) 00000-0000" placeholder="(00) 00000-0000" />
+      </div>
+
+      <div class="form-group">
+        <label for="telefoneFixo">Telefone Fixo</label>
+        <input type="text" id="telefoneFixo" formControlName="telefoneFixo" class="form-control"
+               mask="(00) 0000-0000" placeholder="(00) 0000-0000" />
+      </div>
+    </div>
+
+    @if (form.errors?.['telefoneObrigatorio'] && form.touched) {
+      <div class="error-message">Pelo menos um telefone (Celular ou Fixo) deve ser informado.</div>
+    }
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="convenioId">Convênio</label>
+        <select id="convenioId" formControlName="convenioId" class="form-control">
+          <option value="">Sem convênio</option>
+          @for (convenio of convenios; track convenio.id) {
+            <option [value]="convenio.id">{{ convenio.nome }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="numeroCarteirinha">Número da Carteirinha</label>
+        <input type="text" id="numeroCarteirinha" formControlName="numeroCarteirinha" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="validadeCarteirinha">Validade da Carteirinha</label>
+        <input type="month" id="validadeCarteirinha" formControlName="validadeCarteirinha" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="cancelar()" class="btn-secondary">Cancelar</button>
+      <button type="submit" [disabled]="loading || form.invalid" class="btn-primary">
+        {{ loading ? 'Salvando...' : (isEditMode ? 'Atualizar' : 'Salvar') }}
+      </button>
+    </div>
+  </form>
+</div>

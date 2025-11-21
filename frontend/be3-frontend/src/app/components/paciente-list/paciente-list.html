@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="header">
+    <h2>Lista de Pacientes</h2>
+    <a routerLink="/pacientes/novo" class="btn-primary">Novo Paciente</a>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Carregando...</div>
+  }
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (!loading && !error) {
+    @if (pacientes.length === 0) {
+      <div class="empty-state">
+        <p>Nenhum paciente cadastrado.</p>
+        <a routerLink="/pacientes/novo" class="btn-primary">Cadastrar Primeiro Paciente</a>
+      </div>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Data Nasc.</th>
+            <th>Convênio</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (paciente of pacientes; track $index) {
+            @if (paciente.id) {
+              <tr>
+                <td>{{ paciente.id }}</td>
+                <td>{{ paciente.nome }} {{ paciente.sobrenome }}</td>
+                <td>{{ paciente.email }}</td>
+                <td>{{ formatarCpf(paciente.cpf) }}</td>
+                <td>{{ formatarData(paciente.dataNascimento) }}</td>
+                <td>{{ paciente.convenio?.nome || '-' }}</td>
+                <td>
+                  <span [class]="paciente.ativo ? 'status-ativo' : 'status-inativo'">
+                    {{ paciente.ativo ? 'Ativo' : 'Inativo' }}
+                  </span>
+                </td>
+                <td class="actions">
+                  <a [routerLink]="['/pacientes/editar', paciente.id]" class="btn-edit">Editar</a>
+                  <button 
+                    type="button"
+                    (click)="abrirModalConfirmacao(paciente)" 
+                    [class]="paciente.ativo ? 'btn-delete' : 'btn-activate'"
+                    [disabled]="loading || mostrarModal || !paciente.id">
+                    {{ paciente.ativo ? 'Desativar' : 'Ativar' }}
+                  </button>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
+  }
+
+  @if (mostrarModal && pacienteSelecionado) {
+    <div class="modal-overlay" (click)="fecharModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3>Confirmar Ação</h3>
+        <p>
+          Tem certeza que deseja <strong>{{ pacienteSelecionado.ativo ? 'desativar' : 'ativar' }}</strong> 
+          o paciente <strong>{{ pacienteSelecionado.nome }}</strong>?
+        </p>
+        <div class="modal-actions">
+          <button type="button" (click)="fecharModal()" class="btn-secondary" [disabled]="loading">Cancelar</button>
+          <button type="button" (click)="confirmarAcao()" [class]="pacienteSelecionado.ativo ? 'btn-delete' : 'btn-activate'" [disabled]="loading">
+            {{ loading ? 'Processando...' : (pacienteSelecionado.ativo ? 'Desativar' : 'Ativar') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
