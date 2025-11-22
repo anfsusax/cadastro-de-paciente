@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Be3.Domain", "Be3.Domain\Be3.Domain.csproj", "{E9EA0958-D6E8-4787-94D3-E4FA25066BEE}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Be3.Application", "Be3.Application\Be3.Application.csproj", "{C8BD192A-9766-41CF-B781-2BFA1D684D37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Be3.Api", "Be3.Api\Be3.Api.csproj", "{6617A89F-1E57-4C71-BE24-708589F07775}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Be3.Tests", "Be3.Tests\Be3.Tests.csproj", "{D1C81700-BFEA-B544-0B95-1F33516C97C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,18 @@ Global
 		{6617A89F-1E57-4C71-BE24-708589F07775}.Release|x64.Build.0 = Release|Any CPU
 		{6617A89F-1E57-4C71-BE24-708589F07775}.Release|x86.ActiveCfg = Release|Any CPU
 		{6617A89F-1E57-4C71-BE24-708589F07775}.Release|x86.Build.0 = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|x64.Build.0 = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1C81700-BFEA-B544-0B95-1F33516C97C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
