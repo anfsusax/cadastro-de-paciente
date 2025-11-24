@@ -119,7 +119,14 @@ Cada camada tem seu propósito específico e não interfere no trabalho das outr
 
 ## 📦 Pré-requisitos
 
-Antes de começar, certifique-se de ter instalado:
+### Para Executar com Docker (Recomendado)
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado e rodando
+- Docker Compose (geralmente incluído no Docker Desktop)
+
+**Vantagens:** Não precisa instalar .NET, Node.js ou SQL Server localmente. Tudo roda em containers isolados.
+
+### Para Executar Localmente
 
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) ou superior
 - [Node.js](https://nodejs.org/) (versão 18 ou superior)
@@ -136,7 +143,17 @@ git clone <url-do-repositorio>
 cd entrevista2
 ```
 
-### 2. Configurar o Banco de Dados
+### 2. Escolher Modo de Execução
+
+#### 🐳 Modo Docker (Recomendado)
+
+Se você escolheu executar com Docker, pule para a seção [Executar com Docker](#-opção-1-executar-com-docker-recomendado). O banco de dados será configurado automaticamente.
+
+#### 💻 Modo Local
+
+Se você escolheu executar localmente, continue com a configuração do banco de dados abaixo.
+
+### 3. Configurar o Banco de Dados (Apenas para Modo Local)
 
 #### Passo 1: Criar o Banco de Dados
 
@@ -184,14 +201,14 @@ Edite o arquivo `backend\Be3.Api\appsettings.json` e atualize a connection strin
 
 **Nota:** Ajuste o nome do servidor (`localhost\\SQLEXPRESS`) conforme sua instalação do SQL Server.
 
-### 3. Restaurar Dependências do Backend
+### 4. Restaurar Dependências do Backend (Apenas para Modo Local)
 
 ```bash
 cd backend
 dotnet restore
 ```
 
-### 4. Restaurar Dependências do Frontend
+### 5. Restaurar Dependências do Frontend (Apenas para Modo Local)
 
 ```bash
 cd frontend/be3-frontend
@@ -200,7 +217,76 @@ npm install
 
 ## 🚀 Executando a Aplicação
 
-### Executar Backend
+Este projeto pode ser executado de duas formas: **localmente** (desenvolvimento) ou **no Docker** (containerizado). Escolha a opção que melhor se adequa ao seu ambiente.
+
+### 🐳 Opção 1: Executar com Docker (Recomendado)
+
+A forma mais simples de executar o projeto é usando Docker. Todos os serviços (SQL Server, Backend e Frontend) são iniciados automaticamente.
+
+#### Pré-requisitos Docker
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado e rodando
+
+#### Executar no Docker
+
+```bash
+# Na raiz do projeto
+docker-compose up -d
+```
+
+Este comando irá:
+- ✅ Baixar as imagens necessárias (se não estiverem em cache)
+- ✅ Construir as imagens do backend e frontend
+- ✅ Iniciar o SQL Server em container
+- ✅ Executar os scripts SQL de inicialização do banco automaticamente
+- ✅ Iniciar o backend e frontend
+
+#### Acessar a Aplicação
+
+Após alguns segundos, acesse:
+- **Frontend:** http://localhost:4200
+- **Backend API:** http://localhost:5123
+- **Swagger:** http://localhost:5123/swagger
+- **SQL Server:** localhost:1433
+
+#### Comandos Úteis Docker
+
+```bash
+# Ver logs de todos os serviços
+docker-compose logs -f
+
+# Ver logs de um serviço específico
+docker-compose logs -f backend
+docker-compose logs -f frontend
+docker-compose logs -f sqlserver
+
+# Parar os serviços
+docker-compose down
+
+# Parar e remover volumes (limpar banco de dados)
+docker-compose down -v
+
+# Reconstruir as imagens
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+#### Credenciais do Banco (Docker)
+
+- **Servidor:** localhost,1433 (ou `sqlserver` dentro da rede Docker)
+- **Usuário:** sa
+- **Senha:** Be3@Password123!
+- **Database:** Be3DB
+
+📖 **Para mais detalhes sobre Docker, consulte:** [README.DOCKER.md](README.DOCKER.md)
+
+---
+
+### 💻 Opção 2: Executar Localmente (Desenvolvimento)
+
+Para desenvolvimento local, você precisa ter .NET, Node.js e SQL Server instalados.
+
+#### Executar Backend
 
 1. Abra um terminal na pasta `backend`
 2. Execute:
@@ -223,7 +309,7 @@ O backend estará disponível em:
 
 **Nota:** A porta pode variar. Verifique a saída do terminal para a URL exata.
 
-### Executar Frontend
+#### Executar Frontend
 
 1. Abra um **novo terminal** na pasta `frontend/be3-frontend`
 2. Execute:
@@ -241,11 +327,13 @@ npm start
 O frontend estará disponível em:
 - **Aplicação:** `http://localhost:4200`
 
-**Nota:** O frontend está configurado para se comunicar com o backend em `http://localhost:5123`. Se a porta do backend for diferente, atualize o arquivo `frontend/be3-frontend/src/app/services/paciente.service.ts`.
+**Nota:** O frontend está configurado para se comunicar com o backend em `http://localhost:5123`. Se a porta do backend for diferente, atualize o arquivo `frontend/be3-frontend/src/environments/environment.ts`.
 
-### Acessar a Aplicação
+#### Acessar a Aplicação
 
 Abra seu navegador e acesse: `http://localhost:4200`
+
+📖 **Para mais detalhes sobre configuração local vs Docker, consulte:** [README.AMBIENTES.md](README.AMBIENTES.md)
 
 ## 📁 Estrutura do Projeto
 
@@ -514,6 +602,12 @@ Dependências apontam para abstrações, não para implementações concretas:
 - Dependências são injetadas via construtor (Dependency Injection)
 - Fácil de testar através de mocks das interfaces
 
+## 📚 Documentação Adicional
+
+- **[README.DOCKER.md](README.DOCKER.md)** - Guia completo sobre Docker, comandos úteis e troubleshooting
+- **[README.AMBIENTES.md](README.AMBIENTES.md)** - Como configurar e usar o projeto em ambientes local e Docker
+- **[CONFIGURAR_BANCO.md](CONFIGURAR_BANCO.md)** - Guia rápido para configurar o banco de dados localmente
+
 ## 🐛 Troubleshooting
 
 ### Problema: Erro de conexão com o banco de dados
@@ -559,10 +653,11 @@ Dependências apontam para abstrações, não para implementações concretas:
 
 **Soluções:**
 1. Verifique se o backend está rodando na porta correta
-2. Atualize a URL da API em `frontend/be3-frontend/src/app/services/paciente.service.ts`:
+2. **Modo Local:** Atualize a URL da API em `frontend/be3-frontend/src/environments/environment.ts`:
    ```typescript
-   private apiUrl = 'http://localhost:5123/api/pacientes';
+   apiUrl: 'http://localhost:5123/api'
    ```
+3. **Modo Docker:** O frontend usa proxy nginx. Verifique se o backend está rodando: `docker-compose ps`
 
 ### Problema: Erro de tracking no Angular (NG0955)
 
@@ -593,7 +688,11 @@ Dependências apontam para abstrações, não para implementações concretas:
 
 - **JSON Naming**: Backend configurado para retornar JSON em camelCase (`ativo`, `nome`) para compatibilidade com convenções JavaScript/TypeScript
 
-- **CORS**: Configurado apenas para desenvolvimento (`http://localhost:4200`). Em produção, atualize o `Program.cs`
+- **CORS**: Configurado para desenvolvimento local (`http://localhost:4200`) e Docker (`http://frontend:80`). Em produção, atualize o `Program.cs`
+
+- **Ambientes**: O projeto está configurado para funcionar tanto localmente quanto no Docker. As configurações são selecionadas automaticamente conforme o ambiente de execução. Veja [README.AMBIENTES.md](README.AMBIENTES.md) para detalhes.
+
+- **Docker**: Todos os serviços (SQL Server, Backend, Frontend) podem ser executados com um único comando: `docker-compose up -d`. Veja [README.DOCKER.md](README.DOCKER.md) para detalhes.
 
 ## 🤝 Contribuindo
 

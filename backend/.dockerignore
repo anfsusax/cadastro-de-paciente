@@ -1,0 +1,12 @@
+bin/
+obj/
+*.user
+*.suo
+*.cache
+.vs/
+.vscode/
+*.csproj.user
+*.db
+*.log
+appsettings.Development.json
+

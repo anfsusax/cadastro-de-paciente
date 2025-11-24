@@ -1,0 +1,82 @@
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: be3-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Be3@Password123!
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ./database/scripts:/scripts
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Be3@Password123! -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    networks:
+      - be3-network
+
+  # Database Initialization
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: be3-db-init
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - ./database/scripts:/scripts
+    entrypoint: ["/bin/bash", "/scripts/wait-and-init.sh"]
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - be3-network
+    restart: "no"
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: be3-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      # Sobrescreve a connection string do appsettings.json para usar o SQL Server do Docker
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Be3DB;User Id=sa;Password=Be3@Password123!;Encrypt=False;TrustServerCertificate=True;
+    ports:
+      - "5123:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - be3-network
+    restart: unless-stopped
+
+  # Frontend Angular
+  frontend:
+    build:
+      context: ./frontend/be3-frontend
+      dockerfile: Dockerfile
+    container_name: be3-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - be3-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+
+networks:
+  be3-network:
+    driver: bridge
+
